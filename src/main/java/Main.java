@@ -6,30 +6,45 @@ public class Main {
     public static void main(String[] args) {
 
 
-        ArrayList<Student> studentList = new ArrayList<>();
+        Queue<Teacher> teacherQueue = new Queue<>();
 
-        // Thêm sinh viên
-        studentList.add(new Student("Van Thang", 20, "GCD210184", "111111111"));
-        studentList.add(new Student("Hai Viet", 22, "GCD219012", "222222222"));
+        // Thêm giáo viên vào hàng đợi
+        teacherQueue.offer(new Teacher("Van Thang", 35, "Toan"));
+        teacherQueue.offer(new Teacher("Hai Viet", 42, "Sinh Hoc"));
 
-        // In ra số lượng sinh viên đang có
-        System.out.println("Number of students: " + studentList.size());
+        // In ra số lượng giáo viên đang có trong hàng đợi
+        System.out.println("Number of teachers: " + teacherQueue.size());
 
-        // In danh sách học sinh
-        System.out.println("List of Students:");
-        for (Student student : studentList) {
-            System.out.println(student);
+        // In danh sách giáo viên
+        System.out.println("List of Teachers:");
+        for (Teacher teacher : teacherQueue) {
+            System.out.println(teacher);
         }
 
-
-        // Xóa một sinh viên khỏi danh sách
-        studentList.remove(1);
-
-        // In danh sách sinh viên cập nhật
-        System.out.println("Updated List of Students:");
-        for (Student student : studentList) {
-            System.out.println(student);
+        // Kiểm tra giáo viên ở đầu hàng đợi
+        if (!teacherQueue.isEmpty()) {
+            Teacher firstTeacher = teacherQueue.peek();
+            System.out.println("First Teacher: " + firstTeacher);
+        } else {
+            System.out.println("Queue is empty.");
         }
+
+        // Xóa giáo viên ở đầu hàng đợi
+        if (!teacherQueue.isEmpty()) {
+            Teacher removedTeacher = teacherQueue.poll();
+            System.out.println("Removed Teacher: " + removedTeacher);
+        } else {
+            System.out.println("Queue is empty.");
+        }
+
+        // In danh sách giáo viên sau khi xóa
+        System.out.println("Updated List of Teachers:");
+        for (Teacher teacher : teacherQueue) {
+            System.out.println(teacher);
+        }
+
+        // Kiểm tra kích thước của hàng đợi sau khi xóa
+        System.out.println("Size of the Queue: " + teacherQueue.size());
     }
 
 }

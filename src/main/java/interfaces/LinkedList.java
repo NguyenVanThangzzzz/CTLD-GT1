@@ -9,4 +9,7 @@ public interface LinkedList<E> extends Iterable<E> {
     E getLast();
     int size();
     boolean isEmpty();
+
+    interface Queue3 {
+    }
 }
