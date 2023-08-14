@@ -31,6 +31,13 @@ public class Stack2<E> implements AbstractStack<E> {
         ensureNonEmpty();
         return arrayList.get(this.size - 1);
     }
+    public E removeLatest() {
+        if (!isEmpty()) {
+            int lastIndex = arrayList.size() - 1;
+            return arrayList.remove(lastIndex);
+        }
+        throw new IllegalStateException("Stack is empty");
+    }
 
     @Override
     public int size() {

@@ -68,6 +68,22 @@ public class Queue<E> implements AbstractQueue<E> {
             throw new IllegalStateException("Queue is empty");
         }
     }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<E> current = head;
+        while (current != null) {
+            sb.append(current.element);
+            if (current.next != null) {
+                sb.append(", ");
+            }
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 
     @Override
     public Iterator<E> iterator() {

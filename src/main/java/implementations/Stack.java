@@ -2,33 +2,20 @@ package implementations;
 
 import interfaces.AbstractStack;
 
-
 import java.util.Iterator;
 
 public class Stack<E> implements AbstractStack<E> {
     private Node<E> top;
     private int size;
 
-
-    private static class Node<E> {
+    private static class Node<E>{
         private E element;
         private Node<E> previous;
 
-        public Node(E element) {
-            this.element = element;
-            this.previous = null;
+        public Node(E value) {
+            this.element = value;
         }
-    }
 
-    private void ensureNonEmpty() {
-        if (this.top == null) {
-            throw new IllegalStateException("Stack is empty");
-        }
-    }
-
-    public Stack() {
-        this.top = null;
-        this.size = 0;
     }
 
     @Override
@@ -39,13 +26,19 @@ public class Stack<E> implements AbstractStack<E> {
         this.size++;
     }
 
+    public void ensureNonEmpty(){
+        if (top == null){
+            throw new IllegalStateException("Stack Null");
+        }
+    }
+
     @Override
     public E pop() {
         ensureNonEmpty();
         E element = this.top.element;
         Node<E> temp = this.top.previous;
         this.top.previous = null;
-        this.top = temp;
+        top = temp;
         this.size--;
         return element;
     }
@@ -63,14 +56,16 @@ public class Stack<E> implements AbstractStack<E> {
 
     @Override
     public boolean isEmpty() {
-        return this.size == 0;
+        if (top == null){
+            return true;
+        } else return false;
     }
+
 
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             private Node<E> current = top;
-
             @Override
             public boolean hasNext() {
                 return current != null;
@@ -85,4 +80,18 @@ public class Stack<E> implements AbstractStack<E> {
         };
 
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Stack:\n");
+        Node<E> current = top;
+        while (current != null) {
+            sb.append(current.element);
+            sb.append("\n");
+            current = current.previous;
+        }
+        return sb.toString();
+    }
+
 }

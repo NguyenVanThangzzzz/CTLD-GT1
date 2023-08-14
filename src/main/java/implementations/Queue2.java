@@ -25,7 +25,13 @@ public class Queue2<E> implements AbstractQueue<E> {
         this.size--;
         return element;
     }
-
+    public E removeLatest() {
+        if (!isEmpty()) {
+            int lastIndex = arrayList.size() - 1;
+            return arrayList.remove(lastIndex);
+        }
+        throw new IllegalStateException("Queue is empty");
+    }
     @Override
     public void offer(E element) {
 
