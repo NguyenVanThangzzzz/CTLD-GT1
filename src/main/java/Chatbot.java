@@ -1,18 +1,22 @@
 import implementations.Queue;
 import implementations.Stack;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Chatbot {
     private Queue<String> messageQueue = new Queue<>();
     private Stack<String> messageStack = new Stack<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+
         Chatbot chatbot = new Chatbot();
-        chatbot.startChat();
+        chatbot.Menu();
+
     }
 
-    public void startChat() {
+    public void Menu() throws IOException {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -62,18 +66,27 @@ public class Chatbot {
         return text;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String message) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
-        while (message.trim().isEmpty() || message.length() > 255) {
-            if (message.trim().isEmpty()) {
-                System.out.println("Invalid input: Message is empty. Please enter a valid message.");
-            } else {
-                System.out.println("Invalid input: Message length exceeds 255 characters. Please enter a shorter message.");
-            }
+        while (true) {
+            try {
+                if (message.trim().isEmpty()) {
+                    System.out.println("Invalid input: Message is empty. Please enter a valid message.");
+                } else if (message.length() > 255) {
+                    System.out.println("Invalid input: Message length exceeds 255 characters. Please enter a shorter message.");
+                } else {
+                    break; // Khi không có lỗi, thoát khỏi vòng lặp
+                }
 
-            System.out.print("Input Message: ");
-            message = scanner.nextLine();
+                System.out.print("Input Message: ");
+                message = scanner.nextLine();
+            } catch (Exception e) {
+                // Bắt lỗi và in ra thông báo lỗi
+                System.out.println("An error occurred: " + e.getMessage());
+                System.out.print("Input Message: ");
+                message = scanner.nextLine();
+            }
         }
 
         String[] result = message.split("\\.");
@@ -94,12 +107,33 @@ public class Chatbot {
     }
 
     public void processStack() {
+        if (messageQueue.isEmpty()) {
+            System.out.println("Message queue is empty. Please send messages to the queue first.");
+            return;
+        }
+
+        long startProcessingTime = System.currentTimeMillis();
+
         while (!messageQueue.isEmpty()) {
             String message = messageQueue.poll();
             messageStack.push(message);
+
+            try {
+                Thread.sleep(100); // Sleep for 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        long endProcessingTime = System.currentTimeMillis();
+        long processingTime = endProcessingTime - startProcessingTime;
         System.out.println("Messages processed and moved to the stack.");
+        System.out.printf("Processing Time: %d ms%n", processingTime);
     }
+
+
+
+
 
     public void displayStack() {
         try {
