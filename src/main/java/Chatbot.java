@@ -59,7 +59,7 @@ public class Chatbot {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine(); // Consume invalid input
+                scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
                 e.printStackTrace();
