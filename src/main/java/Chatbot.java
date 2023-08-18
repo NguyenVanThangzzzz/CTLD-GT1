@@ -2,6 +2,7 @@ import implementations.Queue;
 import implementations.Stack;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Chatbot {
@@ -16,48 +17,56 @@ public class Chatbot {
 
     }
 
-    public void Menu() throws IOException {
+    public void Menu() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
-            System.out.println("1. Send Message");
-            System.out.println("2. Display queue");
-            System.out.println("3. ProcessStack");
-            System.out.println("4. Display Stack");
-            System.out.println("5. Remove Latest Message");
-            System.out.println("6. Exit");
-            System.out.print("Select an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            try {
+                System.out.println("1. Send Message");
+                System.out.println("2. Display queue");
+                System.out.println("3. Process Stack");
+                System.out.println("4. Display Stack");
+                System.out.println("5. Remove Latest Message");
+                System.out.println("6. Exit");
+                System.out.print("Select an option: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();  // Consume newline
 
-            switch (choice) {
-                case 1:
-                    String message = inputMessage();
-                    sendMessage(message);
-                    break;
-                case 2:
-                    displayQueue();
-
-                    break;
-                case 3:
-                    processStack();
-                    break;
-                case 4:
-                    displayStack();
-                    break;
-                case 5:
-                    removeLatestMessage();
-                    break;
-                case 6:
-                    running = false;
-                    System.out.println("Goodbye!");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please select again.");
+                switch (choice) {
+                    case 1:
+                        String message = inputMessage();
+                        sendMessage(message);
+                        break;
+                    case 2:
+                        displayQueue();
+                        break;
+                    case 3:
+                        processStack();
+                        break;
+                    case 4:
+                        displayStack();
+                        break;
+                    case 5:
+                        removeLatestMessage();
+                        break;
+                    case 6:
+                        running = false;
+                        System.out.println("Goodbye!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please select again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine(); // Consume invalid input
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
+
 
     public String inputMessage() {
         Scanner scanner = new Scanner(System.in);
@@ -68,35 +77,27 @@ public class Chatbot {
 
     public void sendMessage(String message) throws IOException {
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
-            try {
-                if (message.trim().isEmpty()) {
-                    System.out.println("Invalid input: Message is empty. Please enter a valid message.");
-                } else if (message.length() > 255) {
-                    System.out.println("Invalid input: Message length exceeds 255 characters. Please enter a shorter message.");
-                } else {
-                    break; // Khi không có lỗi, thoát khỏi vòng lặp
+            if (message.trim().isEmpty()) {
+                System.out.println("Invalid input: Message is empty. Please enter a valid message.");
+            } else if (message.length() > 255) {
+                System.out.println("Invalid input: Message length exceeds 255 characters. Please enter a shorter message.");
+            } else {
+                String[] result = message.split("\\.");
+                for (String part : result) {
+                    if (part.trim().length() > 0) {
+                        messageQueue.offer(part);
+                    }
                 }
-
-                System.out.print("Input Message: ");
-                message = scanner.nextLine();
-            } catch (Exception e) {
-                // Bắt lỗi và in ra thông báo lỗi
-                System.out.println("An error occurred: " + e.getMessage());
-                System.out.print("Input Message: ");
-                message = scanner.nextLine();
+                System.out.println("Messages added to the queue.");
+                return; // Thoát khỏi phương thức khi không có lỗi
             }
-        }
 
-        String[] result = message.split("\\.");
-        for (String part : result) {
-            if (part.trim().length() > 0) {
-                messageQueue.offer(part);
-            }
+            System.out.print("Input Message: ");
+            message = scanner.nextLine();
         }
-        System.out.println("Messages added to the queue.");
     }
+
     public void displayQueue() {
         try {
             System.out.println("Display Queue: ");
